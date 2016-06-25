@@ -1,11 +1,51 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<title>Projeto Venda</title>
-</head>
-<body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="/pages/templates/estrutura.xhtml">
 
-</body>
+	<ui:define name="conteudo">
+		<h:form>
+			<h:panelGrid columns="1">
+				<h1>Fornecedor</h1>
+			</h:panelGrid>
+
+			<p:dataTable emptyMessage="Sem Registros para Visualizar."
+				value="#{fornecedorManagedBean.fornecedores}" var="fornecedor">
+
+				<p:column headerText="#" style="text-align: center;width:3%;">
+					<h:outputText value="#{fornecedor.id}" />
+				</p:column>
+
+				<p:column headerText="Nome" sortBy="#{fornecedor.nome}">
+					<h:outputText value="#{fornecedor.nome}" />
+				</p:column>
+
+				<p:column headerText="CNPJ" style="text-align: center;width:18%;">
+					<h:outputText value="#{fornecedor.cnpj}" />
+				</p:column>
+
+
+				<p:column headerText="" style="text-align: center;width:22%;">
+
+					<p:commandButton value="Editar"
+						actionListener="#{fornecedorManagedBean.editar(fornecedor)}" />
+						
+					<p:commandButton value="Excluir"
+						actionListener="#{fornecedorManagedBean.excluir(fornecedor)}" />
+				</p:column>
+
+
+			</p:dataTable>
+			<div align="left">
+				<h:panelGrid columns="1">
+					<p:commandButton value="Novo" actionListener="#{fornecedorManagedBean.novo()}"/>
+				</h:panelGrid>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
 </html>

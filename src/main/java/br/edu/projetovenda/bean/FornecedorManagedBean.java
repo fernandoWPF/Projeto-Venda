@@ -6,12 +6,13 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import br.edu.projetovenda.dao.FornecedorDAO;
 import br.edu.projetovenda.model.Fornecedor;
-@ViewScoped
+
+@SessionScoped
 @ManagedBean
 public class FornecedorManagedBean implements Serializable {
 

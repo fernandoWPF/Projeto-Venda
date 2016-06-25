@@ -5,11 +5,12 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 
 import br.edu.projetovenda.dao.VendaItemDAO;
 import br.edu.projetovenda.model.VendaItem;
-@ViewScoped
+
+@SessionScoped
 @ManagedBean
 public class VendaItemManagedBean implements Serializable {
 
