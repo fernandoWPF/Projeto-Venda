@@ -6,11 +6,13 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import br.edu.projetovenda.dao.ClienteDAO;
 import br.edu.projetovenda.model.Cliente;
 
+@SessionScoped
 @ManagedBean
 public class ClienteManagedBean implements Serializable {
 
@@ -40,11 +42,12 @@ public class ClienteManagedBean implements Serializable {
 
 	public void editar(Cliente cliente) throws IOException {
 		this.cliente = cliente;
+		System.out.println(this.cliente.getNome());
 		FacesContext.getCurrentInstance().getExternalContext().redirect("ClienteCadastro.xhtml");
 	}
 
 	public void excluir(Cliente cliente) throws IOException {
-		dao.excluir(cliente);
+		dao.excluir(dao.getById(cliente.getId()));
 		FacesContext.getCurrentInstance().getExternalContext().redirect("ClientePesquisa.xhtml");
 	}
 
