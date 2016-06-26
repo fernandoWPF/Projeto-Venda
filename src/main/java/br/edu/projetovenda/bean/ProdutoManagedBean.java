@@ -10,6 +10,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import br.edu.projetovenda.dao.ProdutoDAO;
+import br.edu.projetovenda.model.Fornecedor;
 import br.edu.projetovenda.model.Produto;
 
 @SessionScoped
@@ -61,6 +62,10 @@ public class ProdutoManagedBean implements Serializable {
 	public List<Produto> getProdutos() {
 		produtos = dao.findAll();
 		return produtos;
+	}
+
+	public void setFornecedor(Fornecedor fornecedor) {
+		this.produto.setFornecedor(fornecedor);
 	}
 
 }

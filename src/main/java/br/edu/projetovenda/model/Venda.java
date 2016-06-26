@@ -2,22 +2,18 @@ package br.edu.projetovenda.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -39,11 +35,8 @@ public class Venda implements Serializable {
 	@NotNull(message = "Cliente é obrigatório!")
 	private Cliente cliente;
 
+	@Column(scale = 2, precision = 12)
 	private BigDecimal valor;
-	
-	@Transient
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "venda", targetEntity = VendaItem.class)
-	private List<VendaItem> itens = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -73,4 +66,7 @@ public class Venda implements Serializable {
 		this.valor = valor;
 	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
 }

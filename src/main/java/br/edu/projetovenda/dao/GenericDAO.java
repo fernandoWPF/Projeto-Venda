@@ -43,7 +43,7 @@ public abstract class GenericDAO<T> {
 
 	public void salvar(T objeto) {
 		getTransaction().begin();
-		entityManager.persist(objeto);
+		entityManager.merge(objeto);
 		getTransaction().commit();
 	}
 

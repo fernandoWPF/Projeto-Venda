@@ -3,6 +3,8 @@ package br.edu.projetovenda.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,14 +22,16 @@ public class VendaItem implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.ALL})
 	private Venda venda;
 
 	@ManyToOne
 	private Produto produto;
 
+	@Column(scale = 2, precision = 12)
 	private BigDecimal quantidade;
 
+	@Column(scale = 2, precision = 12)
 	private BigDecimal valor;
 
 	public Long getId() {

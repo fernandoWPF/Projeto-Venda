@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<ui:composition template="/pages/templates/estrutura.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="cadProd">
+
+			<h:panelGrid columns="1">
+				<h1>Produto</h1>
+			</h:panelGrid>
+			<h:panelGrid columns="3">
+				<p:outputLabel for="descricao" value="Descrição" />
+				<p:inputText value="#{produtoManagedBean.produto.descricao}"
+					id="descricao" size="50" />
+				<span></span>
+				<p:outputLabel for="preco" value="Preço" />
+				<pe:inputNumber decimalPlaces="2"
+					value="#{produtoManagedBean.produto.valor}" id="preco" size="19" />
+				<span></span>
+				<p:outputLabel for="saldo" value="Saldo" />
+				<pe:inputNumber decimalPlaces="2"
+					value="#{produtoManagedBean.produto.saldo}" id="saldo" size="19" />
+				<span></span>
+
+				<p:outputLabel for="fornecedor" value="Fornecedor" />
+				<p:inputText value="#{produtoManagedBean.produto.fornecedor.nome}"
+					id="fornecedor" size="50" readonly="true" />
+				<p:commandButton onclick="PF('modal').show();" value="Pesquisar" />
+
+			</h:panelGrid>
+
+			<div align="left">
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{produtoManagedBean.salvar()}"
+						update=":msgGlobal"></p:commandButton>
+					<p:button value="Voltar" outcome="ProdutoPesquisa.xhtml"></p:button>
+				</h:panelGrid>
+			</div>
+
+
+		</h:form>
+		<p:dialog widgetVar="modal" modal="true" appendTo="@(body)"
+			header="Pesquisa Fornecedor" resizable="false">
+			<p:dataTable emptyMessage="Sem Registros para Visualizar."
+				value="#{fornecedorManagedBean.fornecedores}" var="fornecedor">
+
+				<p:column headerText="Nome" sortBy="#{fornecedor.nome}"
+					style="text-align: center;width:25%;">
+					<h:outputText value="#{fornecedor.nome}" />
+				</p:column>
+
+				<p:column headerText="CNPJ" style="text-align: center;width:18%;">
+					<h:outputText value="#{fornecedor.cnpj}" />
+				</p:column>
+
+
+				<p:column headerText="" style="text-align: center;width:10%;">
+
+					<p:commandButton value="Selecionar"
+						actionListener="#{produtoManagedBean.setFornecedor(fornecedor)}"
+						onclick="PF('modal').hide();" update=":cadProd:fornecedor" />
+
+				</p:column>
+
+
+			</p:dataTable>
+		</p:dialog>
+
+
+
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="/pages/templates/estrutura.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form>
+			<h:panelGrid columns="1">
+				<h1>Vendas</h1>
+			</h:panelGrid>
+
+			<p:dataTable emptyMessage="Sem Registros para Visualizar."
+				value="#{vendaManagedBean.vendas}" var="venda">
+
+				<p:column headerText="#" style="text-align: center;width:3%;">
+					<h:outputText value="#{venda.id}" />
+				</p:column>
+
+				<p:column headerText="Cliente">
+					<h:outputText value="#{venda.cliente.nome}" />
+				</p:column>
+
+				<p:column headerText="Data" style="text-align: center;width:14%;">
+					<h:outputText value="#{venda.dataVenda}" size="8">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Valor" style="text-align: center;width:16%;">
+					<h:outputText value="#{venda.valor}">
+						<f:convertNumber type="currency" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="" style="text-align: center;width:22%;">
+
+					<p:commandButton value="Editar"
+						actionListener="#{vendaManagedBean.editar(venda)}" />
+
+					<p:commandButton value="Excluir"
+						actionListener="#{vendaManagedBean.excluir(venda)}" />
+				</p:column>
+
+
+			</p:dataTable>
+			<div align="left">
+				<h:panelGrid columns="1">
+					<p:commandButton value="Novo"
+						actionListener="#{vendaManagedBean.novo()}" />
+				</h:panelGrid>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<ui:composition template="/pages/templates/estrutura.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="cadVenda">
+
+			<h:panelGrid columns="1">
+				<h1>Vendas</h1>
+			</h:panelGrid>
+			<h:panelGrid columns="3">
+
+				<p:outputLabel for="data" value="Data" />
+				<p:calendar mask="true" id="data"
+					value="#{vendaManagedBean.venda.dataVenda}" size="9" locale="pt_BR">
+				</p:calendar>
+				<span></span>
+
+				<p:outputLabel for="cliente" value="Cliente" />
+				<p:inputText value="#{vendaManagedBean.venda.cliente.nome}"
+					id="cliente" size="50" readonly="true" />
+				<p:commandButton onclick="PF('modalCliente').show();"
+					value="Pesquisar" />
+
+
+				<p:outputLabel for="produto" value="Produto" />
+				<p:inputText value="#{vendaManagedBean.itemTemp.produto.descricao}"
+					id="produto" size="50" readonly="true" />
+				<p:commandButton onclick="PF('modalProd').show();" value="Pesquisar" />
+
+
+				<p:outputLabel for="qtde" value="Quantidade" />
+				<pe:inputNumber value="#{vendaManagedBean.itemTemp.quantidade}"
+					id="qtde" decimalPlaces="2" />
+				<span></span>
+
+			</h:panelGrid>
+
+			<p:dataTable emptyMessage="Nenhum produto inserido."
+				value="#{vendaManagedBean.itens}" var="item" id="tabItens">
+
+				<p:column headerText="#" style="text-align: center;width:3%;">
+					<h:outputText value="#{item.produto.id}" />
+				</p:column>
+
+				<p:column headerText="Descrição">
+					<h:outputText value="#{item.produto.descricao}" />
+				</p:column>
+
+				<p:column headerText="Qtde" style="text-align: center;width:10%;">
+					<h:outputText value="#{item.quantidade}" />
+				</p:column>
+
+				<p:column headerText="Valor" style="text-align: center;width:16%;">
+					<h:outputText value="#{item.valor}">
+						<f:convertNumber type="currency" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="" style="text-align: center;width:11%;">
+
+					<p:commandButton value="Excluir"  />
+				</p:column>
+			</p:dataTable>
+
+
+			<div align="left">
+				<h:panelGrid columns="3">
+					<p:commandButton value="Salvar"
+						actionListener="#{vendaManagedBean.salvar()}" update=":msgGlobal" />
+
+					<p:commandButton value="Salvar Item"
+						actionListener="#{vendaManagedBean.addProduto(vendaManagedBean.itemTemp.produto,vendaManagedBean.itemTemp.quantidade)}"
+						update=":msgGlobal :cadVenda:tabItens :cadVenda:produto :cadVenda:qtde" />
+
+					<p:button value="Voltar" outcome="VendaPesquisa.xhtml" />
+				</h:panelGrid>
+			</div>
+		</h:form>
+
+		<p:dialog widgetVar="modalCliente" modal="true" appendTo="@(body)"
+			header="Pesquisa Cliente" resizable="false">
+			<p:dataTable emptyMessage="Sem Registros para Visualizar."
+				value="#{clienteManagedBean.clientes}" var="cliente">
+
+				<p:column headerText="Nome" sortBy="#{cliente.nome}"
+					style="text-align: center;width:25%;">
+					<h:outputText value="#{cliente.nome}" />
+				</p:column>
+
+				<p:column headerText="CPF" style="text-align: center;width:18%;">
+					<h:outputText value="#{cliente.cpf}" />
+				</p:column>
+
+
+				<p:column headerText="" style="text-align: center;width:10%;">
+
+					<p:commandButton value="Selecionar"
+						actionListener="#{vendaManagedBean.setCliente(cliente)}"
+						onclick="PF('modalCliente').hide();" update=":cadVenda:cliente" />
+
+				</p:column>
+
+			</p:dataTable>
+		</p:dialog>
+
+
+		<p:dialog widgetVar="modalProd" modal="true" appendTo="@(body)"
+			header="Pesquisa Produto" resizable="false">
+			<p:dataTable emptyMessage="Sem Registros para Visualizar."
+				value="#{produtoManagedBean.produtos}" var="produto">
+
+				<p:column headerText="Descrição"
+					style="text-align: center;width:25%;">
+					<h:outputText value="#{produto.descricao}" />
+				</p:column>
+
+				<p:column headerText="Preço" style="text-align: center;width:18%;">
+					<h:outputText value="#{produto.valor}">
+						<f:convertNumber type="currency" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Saldo" style="text-align: center;width:25%;">
+					<h:outputText value="#{produto.saldo}">
+						<f:convertNumber minFractionDigits="2" />
+					</h:outputText>
+
+				</p:column>
+
+				<p:column headerText="" style="text-align: center;width:10%;">
+
+					<p:commandButton value="Selecionar"
+						actionListener="#{vendaManagedBean.addProdutoItemTemp(produto)}"
+						onclick="PF('modalProd').hide();" update=":cadVenda:produto" />
+
+				</p:column>
+
+			</p:dataTable>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>
+</html>

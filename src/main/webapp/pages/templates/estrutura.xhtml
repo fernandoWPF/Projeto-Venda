@@ -10,44 +10,39 @@
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Venda</title>
-	<link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	<script type="js" src="../../js/config.js"></script>
 </h:head>
 <h:body>
 	<p:growl id="msgGlobal" sticky="true" />
 	<p:layout fullPage="true">
 
-		<p:layoutUnit position="north" style="background: white;height:5px;">
-			<div style="background: white;">
-				<h:panelGrid columns="2">
-					<h:form>
-						<h:commandLink action="/pages/templates/index.xhtml?faces-redirect=true">
-							<h2>Sistema de Vendas</h2>
-						</h:commandLink>
-					</h:form>
+		<p:layoutUnit position="north" header="Sitema de Vendas">
 
-				</h:panelGrid>
-			</div>
 		</p:layoutUnit>
 
 		<p:layoutUnit header="Menu Principal" size="250" position="west">
 			<h:form>
 				<p:panelMenu>
-				
+
 					<p:submenu label="ARQUIVO">
-						<p:menuitem value="Home" outcome="/pages/templates/index.xhtml"/>
-						<p:menuitem value="Sair"/>
+						<p:menuitem value="Home" outcome="/pages/templates/index.xhtml" />
+						<p:menuitem value="Sair" />
 					</p:submenu>
-					
+
 					<p:submenu label="CADASTROS">
 						<p:menuitem value="Fornecedor"
 							outcome="/pages/fornecedor/FornecedorPesquisa.xhtml" />
 						<p:menuitem value="Cliente"
 							outcome="/pages/cliente/ClientePesquisa.xhtml" />
-						<p:menuitem value="Produto" />
+						<p:menuitem value="Produto"
+							outcome="/pages/produto/ProdutoPesquisa.xhtml" />
 					</p:submenu>
 
 					<p:submenu label="MOVIMENTO">
-						<p:menuitem value="Vendas" />
+						<p:menuitem value="Vendas"
+							outcome="/pages/venda/VendaPesquisa.xhtml" />
 					</p:submenu>
 
 				</p:panelMenu>
@@ -56,8 +51,11 @@
 		<p:layoutUnit position="center">
 			<ui:insert name="conteudo" />
 		</p:layoutUnit>
+		
+		<p:layoutUnit position="south" header="Desenvolvido por Fernando Wesley.">
+
+		</p:layoutUnit>
 
 	</p:layout>
-
 </h:body>
 </html>
