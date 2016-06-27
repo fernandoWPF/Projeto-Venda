@@ -2,8 +2,11 @@ package br.edu.projetovenda.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,9 +14,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -26,7 +31,7 @@ public class Venda implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull(message = "Date da venda é obrigatória")
+	@NotNull(message = "Data da venda é obrigatória")
 	@Temporal(TemporalType.DATE)
 	private Date dataVenda;
 
@@ -37,6 +42,9 @@ public class Venda implements Serializable {
 
 	@Column(scale = 2, precision = 12)
 	private BigDecimal valor;
+
+	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "venda", targetEntity = VendaItem.class)
+	private List<VendaItem> vendaItem = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -68,5 +76,13 @@ public class Venda implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public void setVendaItem(List<VendaItem> vendaItem) {
+		this.vendaItem = vendaItem;
+	}
+	
+	public List<VendaItem> getVendaItem() {
+		return vendaItem;
 	}
 }

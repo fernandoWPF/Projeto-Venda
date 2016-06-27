@@ -64,7 +64,8 @@
 				</p:column>
 				<p:column headerText="" style="text-align: center;width:11%;">
 
-					<p:commandButton value="Excluir"  />
+					<p:commandButton value="Excluir"
+						actionListener="#{vendaManagedBean.removeItem(item)}" update=":cadVenda:tabItens" />
 				</p:column>
 			</p:dataTable>
 

@@ -14,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -42,7 +41,6 @@ public class Produto implements Serializable {
 	@ManyToOne
 	private Fornecedor fornecedor;
 
-	@Transient
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "produto", targetEntity = VendaItem.class)
 	private List<VendaItem> itens = new ArrayList<>();
 

@@ -59,17 +59,17 @@ public class VendaManagedBean implements Serializable {
 		Produto produto;
 		ProdutoDAO produtoDao = new ProdutoDAO();
 
-		//dao.salvar(venda);
 		for (VendaItem v : itens) {
 			v.setVenda(venda);
-			itemDao.salvar(v);
 			produto = v.getProduto();
 			produto.setSaldo(produto.getSaldo().subtract(v.getQuantidade()));
 			produtoDao.salvar(produto);
 			valorTotal = valorTotal.add(v.getValor());
 			venda.setValor(valorTotal);
+
 		}
-		//dao.salvar(venda);
+
+		dao.salvar(venda);
 
 		FacesContext.getCurrentInstance().getExternalContext().redirect("VendaPesquisa.xhtml");
 	}
@@ -84,6 +84,41 @@ public class VendaManagedBean implements Serializable {
 	public void excluir(Venda venda) throws IOException {
 		dao.excluir(venda);
 		FacesContext.getCurrentInstance().getExternalContext().redirect("VendaPesquisa.xhtml");
+	}
+
+	public void addProduto(Produto produto, BigDecimal qtde) {
+		VendaItem item = new VendaItem();
+		item.setProduto(produto);
+		item.setQuantidade(qtde);
+		item.setValor(produto.getValor().multiply(qtde));
+		itens.add(item);
+		venda.setVendaItem(itens);
+		itemTemp = new VendaItem();
+	}
+
+	public void addProdutoItemTemp(Produto produto) {
+		itemTemp = new VendaItem();
+		itemTemp.setProduto(produto);
+	}
+
+	public void removeItem(VendaItem item) {
+
+		Produto produto;
+		ProdutoDAO produtoDao = new ProdutoDAO();
+		BigDecimal total;
+		BigDecimal qtde;
+		total = item.getValor();
+		qtde = item.getQuantidade();
+		produto = item.getProduto();
+		System.err.println(produto.getSaldo());
+		itemDao.excluir(item);
+		venda.setValor(venda.getValor().subtract(total));
+		dao.salvar(venda);
+		produto.setSaldo(produto.getSaldo().add(qtde));
+		System.err.println(produto.getSaldo());
+		produtoDao.salvar(produto);
+		System.err.println(produto.getSaldo());
+		itens = itemDao.findByVendaId(venda.getId());
 	}
 
 	public Venda getVenda() {
@@ -103,28 +138,8 @@ public class VendaManagedBean implements Serializable {
 		this.venda.setCliente(cliente);
 	}
 
-	public void addProduto(Produto produto, BigDecimal qtde) {
-		VendaItem item = new VendaItem();
-
-		item.setProduto(produto);
-		item.setQuantidade(qtde);
-		item.setValor(produto.getValor().multiply(qtde));
-		System.err.println(produto.getValor());
-		System.err.println(qtde);
-		System.err.println(produto.getValor().multiply(qtde));
-		itens.add(item);
-
-		itemTemp = new VendaItem();
-
-	}
-
 	public VendaItem getItemTemp() {
 		return itemTemp;
-	}
-
-	public void addProdutoItemTemp(Produto produto) {
-		itemTemp = new VendaItem();
-		itemTemp.setProduto(produto);
 	}
 
 	public List<VendaItem> getItens() {
