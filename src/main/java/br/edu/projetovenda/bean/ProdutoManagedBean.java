@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
 import br.edu.projetovenda.dao.ProdutoDAO;
 import br.edu.projetovenda.model.Fornecedor;
 import br.edu.projetovenda.model.Produto;
+import br.edu.projetovenda.util.FacesUtil;
 
 @SessionScoped
 @ManagedBean
@@ -46,9 +47,13 @@ public class ProdutoManagedBean implements Serializable {
 		FacesContext.getCurrentInstance().getExternalContext().redirect("ProdutoCadastro.xhtml");
 	}
 
-	public void excluir(Produto produto) throws IOException {
+	public void excluir(Produto produto) {
+		try{
 		dao.excluir(produto);
 		FacesContext.getCurrentInstance().getExternalContext().redirect("ProdutoPesquisa.xhtml");
+		}catch(Exception exception){
+			FacesUtil.addMsgError("Produto vinculado a uma venda. Verifique as vendas e refaça a operação!");
+		}
 	}
 
 	public Produto getProduto() {
@@ -60,7 +65,12 @@ public class ProdutoManagedBean implements Serializable {
 	}
 
 	public List<Produto> getProdutos() {
+		dao = null; // isso por conta do problema do sessionScoped
+		dao = new ProdutoDAO(); // isso por conta do problema do sessionScoped
 		produtos = dao.findAll();
+		for (Produto p : produtos) {
+			System.out.println(p.getSaldo());
+		}
 		return produtos;
 	}
 

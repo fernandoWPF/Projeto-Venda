@@ -41,7 +41,7 @@ public class Produto implements Serializable {
 	@ManyToOne
 	private Fornecedor fornecedor;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "produto", targetEntity = VendaItem.class)
+	@OneToMany(cascade = CascadeType.MERGE, mappedBy = "produto", targetEntity = VendaItem.class)
 	private List<VendaItem> itens = new ArrayList<>();
 
 	public Long getId() {

@@ -43,7 +43,7 @@ public class Venda implements Serializable {
 	@Column(scale = 2, precision = 12)
 	private BigDecimal valor;
 
-	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "venda", targetEntity = VendaItem.class)
+	@OneToMany(cascade = { CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH }, mappedBy = "venda", targetEntity = VendaItem.class)
 	private List<VendaItem> vendaItem = new ArrayList<>();
 
 	public Long getId() {

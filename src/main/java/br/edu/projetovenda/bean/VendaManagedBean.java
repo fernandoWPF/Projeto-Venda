@@ -11,13 +11,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import br.edu.projetovenda.dao.ProdutoDAO;
 import br.edu.projetovenda.dao.VendaDAO;
 import br.edu.projetovenda.dao.VendaItemDAO;
 import br.edu.projetovenda.model.Cliente;
 import br.edu.projetovenda.model.Produto;
 import br.edu.projetovenda.model.Venda;
 import br.edu.projetovenda.model.VendaItem;
+import br.edu.projetovenda.util.FacesUtil;
 
 @SessionScoped
 @ManagedBean
@@ -56,19 +56,12 @@ public class VendaManagedBean implements Serializable {
 
 		BigDecimal valorTotal = new BigDecimal("0");
 
-		Produto produto;
-		ProdutoDAO produtoDao = new ProdutoDAO();
-
 		for (VendaItem v : itens) {
 			v.setVenda(venda);
-			produto = v.getProduto();
-			produto.setSaldo(produto.getSaldo().subtract(v.getQuantidade()));
-			produtoDao.salvar(produto);
 			valorTotal = valorTotal.add(v.getValor());
 			venda.setValor(valorTotal);
 
 		}
-
 		dao.salvar(venda);
 
 		FacesContext.getCurrentInstance().getExternalContext().redirect("VendaPesquisa.xhtml");
@@ -87,13 +80,21 @@ public class VendaManagedBean implements Serializable {
 	}
 
 	public void addProduto(Produto produto, BigDecimal qtde) {
-		VendaItem item = new VendaItem();
-		item.setProduto(produto);
-		item.setQuantidade(qtde);
-		item.setValor(produto.getValor().multiply(qtde));
-		itens.add(item);
-		venda.setVendaItem(itens);
-		itemTemp = new VendaItem();
+
+		if (produto == null || qtde.equals("0") || qtde.equals(null)) {
+
+			FacesUtil.addMsgError("Insira os dados corretamente!");
+
+		} else {
+
+			VendaItem item = new VendaItem();
+			item.setProduto(produto);
+			item.setQuantidade(qtde);
+			item.setValor(produto.getValor().multiply(qtde));
+			itens.add(item);
+			venda.setVendaItem(itens);
+			itemTemp = new VendaItem();
+		}
 	}
 
 	public void addProdutoItemTemp(Produto produto) {
@@ -103,21 +104,11 @@ public class VendaManagedBean implements Serializable {
 
 	public void removeItem(VendaItem item) {
 
-		Produto produto;
-		ProdutoDAO produtoDao = new ProdutoDAO();
 		BigDecimal total;
-		BigDecimal qtde;
 		total = item.getValor();
-		qtde = item.getQuantidade();
-		produto = item.getProduto();
-		System.err.println(produto.getSaldo());
-		itemDao.excluir(item);
 		venda.setValor(venda.getValor().subtract(total));
 		dao.salvar(venda);
-		produto.setSaldo(produto.getSaldo().add(qtde));
-		System.err.println(produto.getSaldo());
-		produtoDao.salvar(produto);
-		System.err.println(produto.getSaldo());
+		itemDao.excluir(item);
 		itens = itemDao.findByVendaId(venda.getId());
 	}
 
