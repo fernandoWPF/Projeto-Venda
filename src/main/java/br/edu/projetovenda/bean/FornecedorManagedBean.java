@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 
 import br.edu.projetovenda.dao.FornecedorDAO;
 import br.edu.projetovenda.model.Fornecedor;
+import br.edu.projetovenda.util.FacesUtil;
 
 @SessionScoped
 @ManagedBean
@@ -46,8 +47,12 @@ public class FornecedorManagedBean implements Serializable {
 	}
 
 	public void excluir(Fornecedor fornecedor) throws IOException {
-		dao.excluir(fornecedor);
-		FacesContext.getCurrentInstance().getExternalContext().redirect("FornecedorPesquisa.xhtml");
+		try {
+			dao.excluir(fornecedor);
+			FacesContext.getCurrentInstance().getExternalContext().redirect("FornecedorPesquisa.xhtml");
+		} catch (Exception exception) {
+			FacesUtil.addMsgError("Forncedor vinculado a um produto. Verifique os produtos e refaça a operação!");
+		}
 	}
 
 	public Fornecedor getFornecedor() {
@@ -59,6 +64,8 @@ public class FornecedorManagedBean implements Serializable {
 	}
 
 	public List<Fornecedor> getFornecedores() {
+		dao = null;
+		dao = new FornecedorDAO();
 		fornecedores = dao.findAll();
 		return fornecedores;
 	}

@@ -121,6 +121,8 @@ public class VendaManagedBean implements Serializable {
 	}
 
 	public List<Venda> getVendas() {
+		dao = null;
+		dao = new VendaDAO();
 		vendas = dao.findAll();
 		return vendas;
 	}

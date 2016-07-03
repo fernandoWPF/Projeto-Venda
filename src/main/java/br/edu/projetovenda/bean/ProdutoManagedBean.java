@@ -48,10 +48,10 @@ public class ProdutoManagedBean implements Serializable {
 	}
 
 	public void excluir(Produto produto) {
-		try{
-		dao.excluir(produto);
-		FacesContext.getCurrentInstance().getExternalContext().redirect("ProdutoPesquisa.xhtml");
-		}catch(Exception exception){
+		try {
+			dao.excluir(produto);
+			FacesContext.getCurrentInstance().getExternalContext().redirect("ProdutoPesquisa.xhtml");
+		} catch (Exception exception) {
 			FacesUtil.addMsgError("Produto vinculado a uma venda. Verifique as vendas e refaça a operação!");
 		}
 	}

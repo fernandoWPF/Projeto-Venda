@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 
 import br.edu.projetovenda.dao.ClienteDAO;
 import br.edu.projetovenda.model.Cliente;
+import br.edu.projetovenda.util.FacesUtil;
 
 @SessionScoped
 @ManagedBean
@@ -47,8 +48,12 @@ public class ClienteManagedBean implements Serializable {
 	}
 
 	public void excluir(Cliente cliente) throws IOException {
-		dao.excluir(dao.getById(cliente.getId()));
-		FacesContext.getCurrentInstance().getExternalContext().redirect("ClientePesquisa.xhtml");
+		try {
+			dao.excluir(dao.getById(cliente.getId()));
+			FacesContext.getCurrentInstance().getExternalContext().redirect("ClientePesquisa.xhtml");
+		} catch (Exception exception) {
+			FacesUtil.addMsgError("Cliente vinculado a uma venda. Verifique as vendas e refaça a operação!");
+		}
 	}
 
 	public Cliente getCliente() {
@@ -60,6 +65,8 @@ public class ClienteManagedBean implements Serializable {
 	}
 
 	public List<Cliente> getClientes() {
+		dao = null;
+		dao = new ClienteDAO();
 		clientes = dao.findAll();
 		return clientes;
 	}
